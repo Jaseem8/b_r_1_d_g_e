@@ -1,0 +1,32 @@
+.token-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.token-item:hover {
+  background-color: #f9f9f9;
+}
+
+.token-logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.token-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.token-name {
+  font-weight: bold;
+}
+
+.token-symbol,
+.token-address {
+  font-size: 0.9em;
+  color: #555;
+}

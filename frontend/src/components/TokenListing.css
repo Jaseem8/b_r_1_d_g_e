@@ -1,0 +1,15 @@
+.token-listing {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.maintenance {
+  display: block;
+  color: red;
+}

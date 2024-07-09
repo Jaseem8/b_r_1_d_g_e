@@ -1,0 +1,15 @@
+.token-button {
+  position: relative;
+  width: 20%;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: rgb(235, 237, 239);
+  color: rgb(0, 0, 0);
+  transition: background-color 0.3s;
+}
+
+.token-button:hover {
+  background-color: rgb(164, 165, 167);
+}
