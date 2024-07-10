@@ -1,15 +1,56 @@
 .token-button {
   position: relative;
-  width: 20%;
   padding: 10px;
+  width: 100px;
   margin: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: rgb(235, 237, 239);
   color: rgb(0, 0, 0);
   transition: background-color 0.3s;
+  display: flex;
 }
 
 .token-button:hover {
   background-color: rgb(164, 165, 167);
+}
+
+.tokenImage {
+  position: relative;
+  max-width: 40px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+}
+.tokenName {
+  position: relative;
+  text-align: center;
+  font-weight: bolder;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.blockChainImage {
+  position: absolute;
+  top: 60%;
+  left: 30%;
+  width: 20px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+}
+
+.blockChainName {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  font-size: 8px;
+  margin: 2px;
+}
+.downArrow {
+  position: absolute;
+  bottom: 40%;
+  right: 0%;
+  width: 15px;
+  margin: 5px;
 }

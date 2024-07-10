@@ -6,7 +6,7 @@ import BlockChain from "./BlockChain";
 import TokenListing from "./TokenListing"; // Import TokenListing component
 import "./TokenModal.css";
 
-const TokenModal = ({ isOpen, onClose, setToken }) => {
+const TokenModal = ({ isOpen, onClose, setToken, setBlockChain }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [chainID, setChainID] = useState(1);
 
@@ -45,11 +45,13 @@ const TokenModal = ({ isOpen, onClose, setToken }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar"
         />
+        <span className="blockChain-title">BlockChains</span>
         <BlockChain
           searchTerm={searchTerm}
           setToken={setToken}
           onClose={onClose}
           setChainID={setChainID}
+          setBlockChain={setBlockChain}
         />
 
         {/* Render TokenListing component */}

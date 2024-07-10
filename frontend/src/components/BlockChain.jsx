@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./BlockChain.css";
+import downArrow from "../assets/downArrow.png";
 
-const BlockChain = ({ searchTerm, setToken, onClose, setChainID }) => {
+const BlockChain = ({
+  searchTerm,
+  setToken,
+  onClose,
+  setChainID,
+  setBlockChain,
+}) => {
   const [blockChains, setBlockChains] = useState([]);
   const [displayCount, setDisplayCount] = useState(5); // Initially show 4 tokens
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -44,9 +51,11 @@ const BlockChain = ({ searchTerm, setToken, onClose, setChainID }) => {
             <button
               className="blockchain-button"
               onClick={() => {
+                setBlockChain(blockChain);
                 setChainID(blockChain.chainId);
               }}
             >
+              <img src={blockChain.logoURI} className="image" />
               {blockChain.name}
             </button>
           </div>
@@ -55,6 +64,7 @@ const BlockChain = ({ searchTerm, setToken, onClose, setChainID }) => {
       {displayCount < filteredBlockChains.length && (
         <button className="more-button" onClick={handleLoadMore}>
           More
+          <img src={downArrow} className="downArrow" />
         </button>
       )}
     </div>

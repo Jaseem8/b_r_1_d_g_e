@@ -7,26 +7,39 @@
 
 .blockchain-item {
   margin: 5px;
+  height: fit-content;
+  max-width: 90px;
 }
 
 .blockchain-button {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #68757c;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  box-shadow: 1px 1px 1px #c0c0c0;
 }
 
 .blockchain-button:hover {
-  background-color: #0056b3;
+  background-color: #4b719a;
 }
 
+.image {
+  width: 25px;
+  aspect-ratio: 1;
+}
 .more-button {
+  position: relative;
   margin-top: 20px;
-  padding: 10px 20px;
+  padding: 10px 25px;
   border: none;
   border-radius: 5px;
   background-color: #e0e0e0;
@@ -36,4 +49,9 @@
 
 .more-button:hover {
   background-color: #c0c0c0;
+}
+.downArrow {
+  position: absolute;
+  width: 15px;
+  margin: 5px;
 }

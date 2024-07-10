@@ -20,7 +20,9 @@
 
 h2 {
   margin: 0 0 10px 0px;
-  font-size: 15px;
+  font-size: 20px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-align: center;
   color: #000000;
 }
@@ -30,10 +32,14 @@ h2 {
   justify-content: space-between;
   margin-bottom: 10px;
   color: #000000;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: 900;
 }
 
 .max-button {
-  background-color: #e0e0e0;
+  background-color: #cacaca;
+  color: #000000;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -42,7 +48,7 @@ h2 {
 }
 
 .max-button:hover {
-  background-color: #c0c0c0;
+  background-color: #d8d0d0;
 }
 
 .swap-section {
@@ -52,9 +58,10 @@ h2 {
 .from,
 .to {
   position: relative;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 2px rgba(70, 66, 66, 0.1);
   border-radius: 15px;
   border: 2px solid #ddd2d2;
+  background-color: rgb(246, 247, 248);
   min-height: 80px;
   display: flex;
   justify-content: space-evenly;
@@ -66,28 +73,28 @@ h2 {
   font-size: larger;
   position: relative;
   z-index: 1;
-  background-color: #fffcfc;
+  background-color: rgb(246, 247, 248);
 }
 .from > span,
 .to > span {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12px;
   color: black;
   position: absolute;
   top: 5%;
   left: 5%;
   display: inline;
   z-index: 2;
-
-  border: 1px solid red;
 }
 
 .dollar-value {
   position: absolute;
+  font-size: 10px;
   display: inline;
   color: #000000;
   bottom: 0%;
   z-index: 1;
   right: 35%;
-  border: 1px solid green;
 }
 
 input {
@@ -96,14 +103,22 @@ input {
   padding: 10px;
   background-color: #f6f7f8;
   color: #000000;
-  border: 1px solid #ccc;
   border-radius: 5px;
-  text-align: center;
+  text-align: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 900;
 }
-
+.quote {
+  margin: 15px;
+}
+.exchange {
+  color: #000000;
+  font-family: "Courier New", Courier, monospace;
+}
 .swap-button {
   align-self: center;
   width: 70%;
+  font-size: 20px;
   padding: 10px;
   background-color: #007bff;
   color: white;
@@ -115,4 +130,8 @@ input {
 
 .swap-button:hover {
   background-color: #0056b3;
+}
+.swap-button:disabled {
+  background-color: #303133;
+  cursor: not-allowed;
 }

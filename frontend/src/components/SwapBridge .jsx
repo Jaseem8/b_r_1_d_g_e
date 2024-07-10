@@ -1,8 +1,10 @@
-//   src/components/SwapBridge.jsx
+// src/components/SwapBridge.jsx
 import React, { useEffect, useState } from "react";
 import "./SwapBridge.css";
-import TokenModal from "./TokenModal"; // Import the TokenModal component
-import TokenButton from "./TokenButton"; // Import the TokenButton component
+import TokenModal from "./TokenModal";
+import TokenButton from "./TokenButton";
+import ConfirmModal from "./ConfirmModal"; // Import ConfirmModal
+import convertAndScaleScientificNumber from "../utils/converter";
 
 const SwapBridge = () => {
   const [fromCoin, setFromCoin] = useState({
@@ -24,17 +26,27 @@ const SwapBridge = () => {
       "https://assets.coingecko.com/coins/images/9956/small/4943.png?1636636734",
   });
   const [fromAmount, setFromAmount] = useState(2);
-  const [toAmount, setToAmount] = useState(0);
-  const [balance, setBalance] = useState(0.04077);
+  const [fromBlockChain, setFromBlockChain] = useState({
+    chainId: 1,
+    name: "ETHEREUM",
+    logoURI:
+      "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+  });
+  const [toBlockChain, setToBlockChain] = useState({
+    chainId: 1,
+    name: "ETHEREUM",
+    logoURI:
+      "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+  });
+  const [balance, setBalance] = useState(15);
   const [isFromModalOpen, setIsFromModalOpen] = useState(false);
   const [isToModalOpen, setIsToModalOpen] = useState(false);
-  const [exchangeRate, setExchangeRate] = useState(2.5); // Example rate, this can be dynamic as well
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State for ConfirmModal
   const [success, setSuccess] = useState(false);
   const [quote, setQuote] = useState(null);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    // Fetch exchange rate from the API whenever fromAmount changes
     const fetchQuote = async () => {
       try {
         const response = await fetch(`${backendUrl}/quote`, {
@@ -50,20 +62,23 @@ const SwapBridge = () => {
         });
         const data = await response.json();
         setSuccess(data.success);
-        setQuote(data.routes[0]);
-        console.log(success);
-        console.log(quote);
+        if (success) {
+          setQuote(data.routes[0]);
+        } else {
+          setQuote(null);
+        }
+
+        console.log("sucess", success);
       } catch (error) {
         console.error("Error fetching exchange rate:", error);
       }
     };
 
     fetchQuote();
-  }, [fromAmount, fromCoin, toCoin]);
+  }, [fromAmount, fromCoin, toCoin, success]);
 
   const handleMaxClick = () => {
     setFromAmount(balance);
-    setToAmount(balance * exchangeRate);
   };
 
   const handleFromAmountChange = (e) => {
@@ -71,10 +86,20 @@ const SwapBridge = () => {
     setFromAmount(value);
   };
 
+  const handleSwapBridgeClick = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmTransaction = () => {
+    // Handle the actual transaction confirmation logic here
+    console.log("Transaction confirmed");
+    setIsConfirmModalOpen(false);
+  };
+
   return (
     <div className="swap-bridge">
       <div className="address">
-        <span>0xE002...F3d5</span>
+        <span>Address</span>
       </div>
       <h2>Swap & Bridge</h2>
       <div className="balance">
@@ -95,12 +120,14 @@ const SwapBridge = () => {
           />
           {success && (
             <label className="dollar-value">
-              {quote.srcQuoteTokenUsdValue}
+              ≈ $ &nbsp;{" "}
+              {convertAndScaleScientificNumber(quote?.srcQuoteTokenUsdValue)}
             </label>
           )}
           <TokenButton
             onClick={() => setIsFromModalOpen(true)}
             token={fromCoin}
+            blockChain={fromBlockChain}
           />
         </div>
 
@@ -108,36 +135,71 @@ const SwapBridge = () => {
           <span>To (Quote)</span>
           <input
             type="number"
-            value={quote.dstQuoteTokenAmount}
+            value={quote ? quote.dstQuoteTokenAmount * 0.992224 : 0}
             readOnly
             className="input"
           />
           {success && (
             <label className="dollar-value">
-              {quote.dstQuoteTokenUsdValue}
+              ≈ $ &nbsp;
+              {convertAndScaleScientificNumber(quote?.dstQuoteTokenUsdValue)}
             </label>
-          )}{" "}
-          <TokenButton onClick={() => setIsToModalOpen(true)} token={toCoin} />
+          )}
+          <TokenButton
+            onClick={() => setIsToModalOpen(true)}
+            token={toCoin}
+            blockChain={toBlockChain}
+          />
         </div>
         <div className="quote">
-          <span>
-            1 {fromCoin.name} = {exchangeRate} {toCoin.name}
-          </span>
+          {success && (
+            <span className="exchange">
+              1 {fromCoin.name} ={" "}
+              {(quote?.dstQuoteTokenAmount * 0.992224) / fromAmount}{" "}
+              {toCoin.name}
+            </span>
+          )}
         </div>
+        <button
+          className="swap-button"
+          onClick={handleSwapBridgeClick}
+          disabled={!success}
+        >
+          {success && <span>Swap & Bridge</span>}
+          {!success && (
+            <span>Chosen Bridging Is not Possible. Choose Another</span>
+          )}
+        </button>
       </div>
-      <button className="swap-button">Swap & Bridge</button>
 
-      <TokenModal
-        isOpen={isFromModalOpen}
-        onClose={() => setIsFromModalOpen(false)}
-        setToken={setFromCoin}
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        fromCoin={fromCoin}
+        toCoin={toCoin}
+        fromAmount={fromAmount}
+        quote={quote}
+        fromBlockChain={fromBlockChain}
+        toBlockChain={toBlockChain}
+        onConfirm={handleConfirmTransaction}
       />
 
-      <TokenModal
-        isOpen={isToModalOpen}
-        onClose={() => setIsToModalOpen(false)}
-        setToken={setToCoin}
-      />
+      {isFromModalOpen && (
+        <TokenModal
+          isOpen={isFromModalOpen}
+          onClose={() => setIsFromModalOpen(false)}
+          setToken={setFromCoin}
+          setBlockChain={setFromBlockChain}
+        />
+      )}
+      {isToModalOpen && (
+        <TokenModal
+          isOpen={isToModalOpen}
+          onClose={() => setIsToModalOpen(false)}
+          setToken={setToCoin}
+          setBlockChain={setToBlockChain}
+        />
+      )}
     </div>
   );
 };

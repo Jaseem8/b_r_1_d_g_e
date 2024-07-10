@@ -1,12 +1,13 @@
 .token-listing {
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(3, auto);
   max-height: 400px;
   overflow-y: auto;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 10px;
   background-color: #fff;
+  margin: 10px;
 }
 
 .maintenance {

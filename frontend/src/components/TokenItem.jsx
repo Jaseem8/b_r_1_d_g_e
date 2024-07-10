@@ -11,7 +11,7 @@ const TokenItem = ({ token, setToken, onClose }) => {
       <img src={token.logoURI} alt={token.name} className="token-logo" />
       <div className="token-details">
         <span className="token-name">{token.name}</span>
-        <span className="token-symbol">{token.symbol}</span>
+        {/* <span className="token-symbol">{token.symbol}</span> */}
         {/* <span className="token-address">{token.address}</span> */}
       </div>
     </div>

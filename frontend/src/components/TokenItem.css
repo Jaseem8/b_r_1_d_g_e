@@ -1,13 +1,17 @@
 .token-item {
   display: flex;
   align-items: center;
+  flex-direction: column;
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #eee;
+  border-radius: 15px;
+  border: 1px solid rgb(182, 177, 177);
+  margin: 5px;
 }
 
 .token-item:hover {
-  background-color: #f9f9f9;
+  background-color: #eee8e8;
 }
 
 .token-logo {
@@ -22,7 +26,8 @@
 }
 
 .token-name {
-  font-weight: bold;
+  font-weight: 600;
+  color: black;
 }
 
 .token-symbol,

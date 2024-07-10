@@ -1,7 +1,7 @@
 import React from "react";
 import "./TokenButton.css";
-
-const TokenButton = ({ onClick, token }) => {
+import downArrow from "../assets/downArrow.png";
+const TokenButton = ({ onClick, token, blockChain }) => {
   return (
     <div
       className="token-button"
@@ -9,8 +9,20 @@ const TokenButton = ({ onClick, token }) => {
         onClick();
       }}
     >
-      <img src={token.logoURI} alt={token.symbol} />
-      <span>{token.name}</span>
+      <div>
+        <img src={token.logoURI} alt={token.symbol} className="tokenImage" />
+
+        <img
+          src={blockChain?.logoURI}
+          alt={blockChain.name}
+          className="blockChainImage"
+        />
+      </div>
+      <div>
+        <span className="tokenName">{token.name}</span>
+        <span className="blockChainName">{blockChain?.name}</span>
+      </div>
+      <img src={downArrow} className="downArrow" />
     </div>
   );
 };
