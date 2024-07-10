@@ -3,47 +3,33 @@ import React, { useEffect, useState } from "react";
 import "./SwapBridge.css";
 import TokenModal from "./TokenModal";
 import TokenButton from "./TokenButton";
-import ConfirmModal from "./ConfirmModal"; // Import ConfirmModal
+import ConfirmModal from "./ConfirmModal";
+import { useSwapBridgeContext } from "../contexts/SwapBridgeContext";
 import convertAndScaleScientificNumber from "../utils/converter";
 
 const SwapBridge = () => {
-  const [fromCoin, setFromCoin] = useState({
-    address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    symbol: "ETH",
-    name: "ETH",
-    chainId: 1,
-    decimals: 18,
-    logoURI:
-      "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
-  });
-  const [toCoin, setToCoin] = useState({
-    address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-    symbol: "DAI",
-    name: "DAI",
-    chainId: 1,
-    decimals: 18,
-    logoURI:
-      "https://assets.coingecko.com/coins/images/9956/small/4943.png?1636636734",
-  });
+  const {
+    fromCoin,
+    setFromCoin,
+    toCoin,
+    setToCoin,
+    fromBlockChain,
+    setFromBlockChain,
+    toBlockChain,
+    setToBlockChain,
+    balance,
+    setBalance,
+    success,
+    setSuccess,
+    quote,
+    setQuote,
+  } = useSwapBridgeContext();
+
   const [fromAmount, setFromAmount] = useState(2);
-  const [fromBlockChain, setFromBlockChain] = useState({
-    chainId: 1,
-    name: "ETHEREUM",
-    logoURI:
-      "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
-  });
-  const [toBlockChain, setToBlockChain] = useState({
-    chainId: 1,
-    name: "ETHEREUM",
-    logoURI:
-      "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
-  });
-  const [balance, setBalance] = useState(15);
   const [isFromModalOpen, setIsFromModalOpen] = useState(false);
   const [isToModalOpen, setIsToModalOpen] = useState(false);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State for ConfirmModal
-  const [success, setSuccess] = useState(false);
-  const [quote, setQuote] = useState(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
@@ -62,20 +48,18 @@ const SwapBridge = () => {
         });
         const data = await response.json();
         setSuccess(data.success);
-        if (success) {
+        if (data.success) {
           setQuote(data.routes[0]);
         } else {
           setQuote(null);
         }
-
-        console.log("sucess", success);
       } catch (error) {
         console.error("Error fetching exchange rate:", error);
       }
     };
 
     fetchQuote();
-  }, [fromAmount, fromCoin, toCoin, success]);
+  }, [fromAmount, fromCoin, toCoin]);
 
   const handleMaxClick = () => {
     setFromAmount(balance);

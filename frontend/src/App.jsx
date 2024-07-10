@@ -3,6 +3,7 @@ import "./App.css";
 import { fetchParams } from "./utils/api";
 import SwapBridge from "./components/SwapBridge ";
 import XyWidget from "./components/XyWidget";
+import { SwapBridgeProvider } from "./contexts/SwapBridgeContext";
 
 const App = () => {
   const [quote, setQuote] = useState(null);
@@ -18,7 +19,10 @@ const App = () => {
   return (
     <>
       <div className="app">
-        <SwapBridge />
+        <SwapBridgeProvider>
+          <SwapBridge />
+        </SwapBridgeProvider>
+
         <XyWidget />
       </div>
     </>
