@@ -6,26 +6,38 @@ import TokenButton from "./TokenButton"; // Import the TokenButton component
 
 const SwapBridge = () => {
   const [fromCoin, setFromCoin] = useState({
-    name: "ETH",
     address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+    symbol: "ETH",
+    name: "ETH",
+    chainId: 1,
+    decimals: 18,
+    logoURI:
+      "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
   });
   const [toCoin, setToCoin] = useState({
-    name: "USDT",
-    address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    symbol: "DAI",
+    name: "DAI",
+    chainId: 1,
+    decimals: 18,
+    logoURI:
+      "https://assets.coingecko.com/coins/images/9956/small/4943.png?1636636734",
   });
-  const [fromAmount, setFromAmount] = useState(0.02);
-  const [toAmount, setToAmount] = useState(0.1566943416099);
+  const [fromAmount, setFromAmount] = useState(2);
+  const [toAmount, setToAmount] = useState(0);
   const [balance, setBalance] = useState(0.04077);
   const [isFromModalOpen, setIsFromModalOpen] = useState(false);
   const [isToModalOpen, setIsToModalOpen] = useState(false);
   const [exchangeRate, setExchangeRate] = useState(2.5); // Example rate, this can be dynamic as well
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [success, setSuccess] = useState(false);
+  const [quote, setQuote] = useState(null);
 
   useEffect(() => {
     // Fetch exchange rate from the API whenever fromAmount changes
     const fetchQuote = async () => {
       try {
-        const response = await fetch(`${backendUrl}/quotes`, {
+        const response = await fetch(`${backendUrl}/quote`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -37,15 +49,16 @@ const SwapBridge = () => {
           }),
         });
         const data = await response.json();
-        console.log(data);
+        setSuccess(data.success);
+        setQuote(data.routes[0]);
+        console.log(success);
+        console.log(quote);
       } catch (error) {
         console.error("Error fetching exchange rate:", error);
       }
     };
 
-    if (fromAmount > 0) {
-      fetchQuote();
-    }
+    fetchQuote();
   }, [fromAmount, fromCoin, toCoin]);
 
   const handleMaxClick = () => {
@@ -80,7 +93,11 @@ const SwapBridge = () => {
             min={0}
             onChange={handleFromAmountChange}
           />
-          <label className="dollar-value">Dollar value</label>
+          {success && (
+            <label className="dollar-value">
+              {quote.srcQuoteTokenUsdValue}
+            </label>
+          )}
           <TokenButton
             onClick={() => setIsFromModalOpen(true)}
             token={fromCoin}
@@ -91,11 +108,15 @@ const SwapBridge = () => {
           <span>To (Quote)</span>
           <input
             type="number"
-            value={toAmount.toFixed(10)}
+            value={quote.dstQuoteTokenAmount}
             readOnly
             className="input"
           />
-          <label className="dollar-value">Dollar value</label>
+          {success && (
+            <label className="dollar-value">
+              {quote.dstQuoteTokenUsdValue}
+            </label>
+          )}{" "}
           <TokenButton onClick={() => setIsToModalOpen(true)} token={toCoin} />
         </div>
         <div className="quote">

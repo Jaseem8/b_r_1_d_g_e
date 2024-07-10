@@ -17,7 +17,7 @@ const TokenListing = ({ chainID, setToken, onClose }) => {
         const data = await response.data;
         const success = await data.success;
         setSuccess(success);
-        console.log(data);
+        //console.log(data);
 
         setTokens(data.recommendedTokens); // Assuming data is an array of tokens
         console.log("tokens", tokens);

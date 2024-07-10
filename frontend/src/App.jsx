@@ -19,7 +19,7 @@ const App = () => {
     <>
       <div className="app">
         <SwapBridge />
-        {/* <XyWidget /> */}
+        <XyWidget />
       </div>
     </>
   );
