@@ -82,9 +82,9 @@ const SwapBridge = () => {
 
   return (
     <div className="swap-bridge">
-      <div className="address">
+      {/* <div className="address">
         <span>Address</span>
-      </div>
+      </div> */}
       <h2>Swap & Bridge</h2>
       <div className="balance">
         <span>Balance: {balance.toFixed(5)}</span>

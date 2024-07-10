@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 import { fetchParams } from "./utils/api";
 import SwapBridge from "./components/SwapBridge ";
-import XyWidget from "./components/XyWidget";
 import { SwapBridgeProvider } from "./contexts/SwapBridgeContext";
 
 const App = () => {
@@ -22,8 +21,6 @@ const App = () => {
         <SwapBridgeProvider>
           <SwapBridge />
         </SwapBridgeProvider>
-
-        <XyWidget />
       </div>
     </>
   );
