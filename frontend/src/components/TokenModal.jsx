@@ -45,7 +45,6 @@ const TokenModal = ({ isOpen, onClose, setToken, setBlockChain }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar"
         />
-        <span className="blockChain-title">BlockChains</span>
         <BlockChain
           searchTerm={searchTerm}
           setToken={setToken}

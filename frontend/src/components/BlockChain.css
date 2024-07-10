@@ -1,3 +1,9 @@
+.blockChain-title {
+  color: black;
+  text-align: left;
+  font-weight: 700;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -27,7 +33,16 @@
   font-size: 10px;
   box-shadow: 1px 1px 1px #c0c0c0;
 }
-
+.selected {
+  background-image: linear-gradient(
+    to right,
+    #00ad3a,
+    #ffc107
+  ); /* Gradient background */
+  border-color: #ffc107; /* Yellow border color for selected item */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example shadow effect for selected item */
+  color: black; /* Text color */
+}
 .blockchain-button:hover {
   background-color: #4b719a;
 }

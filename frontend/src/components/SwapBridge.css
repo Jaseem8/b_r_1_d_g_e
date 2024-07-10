@@ -120,18 +120,19 @@ input {
   width: 70%;
   font-size: 20px;
   padding: 10px;
-  background-color: #007bff;
+  background-image: linear-gradient(to right, #3caff6, #076aff);
   color: white;
   border: 1px solid rgb(67, 28, 182);
   border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .swap-button:hover {
-  background-color: #0056b3;
+  background-image: linear-gradient(to right, #0066ff, #3caff6);
 }
 .swap-button:disabled {
+  background-image: none;
   background-color: #303133;
   cursor: not-allowed;
+  font-size: 15px;
 }

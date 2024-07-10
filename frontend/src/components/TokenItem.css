@@ -8,12 +8,23 @@
   border-radius: 15px;
   border: 1px solid rgb(182, 177, 177);
   margin: 5px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 }
 
 .token-item:hover {
   background-color: #eee8e8;
 }
+.token-item.mount {
+  opacity: 1;
+  transform: scale(1);
+}
 
+.token-item.unmount {
+  opacity: 0;
+  transform: scale(0.9);
+}
 .token-logo {
   width: 40px;
   height: 40px;
