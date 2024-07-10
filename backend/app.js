@@ -19,7 +19,7 @@ app.use(express.json());
 
 // Use the routes
 app.use("/tokens", tokenRoutes);
-app.use("/quotes", quoteRoutes);
+app.use("/quote", quoteRoutes);
 app.use("/params", paramRoutes);
 app.use("/blockchains", blockchainRoutes);
 
