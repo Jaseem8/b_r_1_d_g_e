@@ -10,7 +10,7 @@ const TokenListing = ({ chainID, setToken, onClose }) => {
     // Function to fetch tokens from backend URL
     const fetchTokens = async () => {
       try {
-        console.log(chainID);
+        // console.log(chainID);
 
         const response = await axios.get(`${backendUrl}/tokens/${chainID}`);
 
@@ -20,7 +20,7 @@ const TokenListing = ({ chainID, setToken, onClose }) => {
         //console.log(data);
 
         setTokens(data.recommendedTokens); // Assuming data is an array of tokens
-        console.log("tokens", tokens);
+        // console.log("tokens", tokens);
       } catch (error) {
         console.error("Error fetching tokens:", error);
         // Handle error state if needed

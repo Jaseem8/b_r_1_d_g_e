@@ -48,6 +48,7 @@ const SwapBridge = () => {
         });
         const data = await response.json();
         setSuccess(data.success);
+        console.log(data);
         if (data.success) {
           setQuote(data.routes[0]);
         } else {
@@ -139,8 +140,9 @@ const SwapBridge = () => {
           {success && (
             <span className="exchange">
               1 {fromCoin.name} ={" "}
-              {(quote?.dstQuoteTokenAmount * 0.992224) / fromAmount}{" "}
-              {toCoin.name}
+              {(quote?.dstQuoteTokenAmount * 0.992224) /
+                quote?.srcQuoteTokenAmount}
+              &nbsp; {toCoin.name}
             </span>
           )}
         </div>
