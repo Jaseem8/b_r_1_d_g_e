@@ -19,7 +19,6 @@
   position: relative;
   max-width: 40px;
   border-radius: 50%;
-  border: 1px solid #ffffff;
 }
 .tokenName {
   position: relative;
@@ -38,6 +37,7 @@
   width: 20px;
   border-radius: 50%;
   border: 1px solid #ffffff;
+  background-color: #ffffff;
 }
 
 .blockChainName {

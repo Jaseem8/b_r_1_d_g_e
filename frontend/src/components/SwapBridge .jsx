@@ -5,8 +5,8 @@ import TokenModal from "./TokenModal";
 import TokenButton from "./TokenButton";
 import ConfirmModal from "./ConfirmModal";
 import { useSwapBridgeContext } from "../contexts/SwapBridgeContext";
-import convertAndScaleScientificNumber from "../utils/converter";
-
+import sumOfExponents from "../utils/converter";
+import calculatePower from "../utils/calculatePower";
 const SwapBridge = () => {
   const {
     fromCoin,
@@ -23,12 +23,17 @@ const SwapBridge = () => {
     setSuccess,
     quote,
     setQuote,
+    errorCode,
+    setErrorCode,
+    errorMsg,
+    setErrorMsg,
   } = useSwapBridgeContext();
 
-  const [fromAmount, setFromAmount] = useState(2);
+  const [fromAmount, setFromAmount] = useState(1);
   const [isFromModalOpen, setIsFromModalOpen] = useState(false);
   const [isToModalOpen, setIsToModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [multiplier, setMultiplier] = useState(1);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -51,8 +56,16 @@ const SwapBridge = () => {
         console.log(data);
         if (data.success) {
           setQuote(data.routes[0]);
+          setMultiplier(
+            sumOfExponents(
+              data.routes[0].srcQuoteTokenUsdValue,
+              data.routes[0].dstQuoteTokenUsdValue
+            )
+          );
         } else {
           setQuote(null);
+          setErrorCode(data.errorCode);
+          setErrorMsg(data.errorMsg);
         }
       } catch (error) {
         console.error("Error fetching exchange rate:", error);
@@ -106,7 +119,8 @@ const SwapBridge = () => {
           {success && (
             <label className="dollar-value">
               ≈ $ &nbsp;{" "}
-              {convertAndScaleScientificNumber(quote?.srcQuoteTokenUsdValue)}
+              {quote?.srcQuoteTokenUsdValue *
+                calculatePower(quote?.srcQuoteTokenUsdValue)}
             </label>
           )}
           <TokenButton
@@ -120,14 +134,18 @@ const SwapBridge = () => {
           <span>To (Quote)</span>
           <input
             type="number"
-            value={quote ? quote.dstQuoteTokenAmount * 0.992224 : 0}
+            value={
+              quote ? quote.dstQuoteTokenAmount * 0.992224 * multiplier : 0
+            }
             readOnly
             className="input"
           />
           {success && (
             <label className="dollar-value">
               ≈ $ &nbsp;
-              {convertAndScaleScientificNumber(quote?.dstQuoteTokenUsdValue)}
+              {quote?.dstQuoteTokenUsdValue *
+                calculatePower(quote?.dstQuoteTokenUsdValue) *
+                0.992224}
             </label>
           )}
           <TokenButton
@@ -140,7 +158,7 @@ const SwapBridge = () => {
           {success && (
             <span className="exchange">
               1 {fromCoin.name} ={" "}
-              {(quote?.dstQuoteTokenAmount * 0.992224) /
+              {(quote?.dstQuoteTokenAmount * 0.992224 * multiplier) /
                 quote?.srcQuoteTokenAmount}
               &nbsp; {toCoin.name}
             </span>
@@ -152,8 +170,9 @@ const SwapBridge = () => {
           disabled={!success}
         >
           {success && <span>Swap & Bridge</span>}
-          {!success && (
-            <span>Chosen Bridging Is not Possible. Choose Another</span>
+          {!success && errorCode !== 10000 && <span>{`${errorMsg}`}</span>}
+          {!success && errorCode == 10000 && (
+            <span>{`${errorMsg}:Try Increasing the Amount`}</span>
           )}
         </button>
       </div>
@@ -168,6 +187,7 @@ const SwapBridge = () => {
         fromBlockChain={fromBlockChain}
         toBlockChain={toBlockChain}
         onConfirm={handleConfirmTransaction}
+        multiplier={multiplier}
       />
 
       {isFromModalOpen && (

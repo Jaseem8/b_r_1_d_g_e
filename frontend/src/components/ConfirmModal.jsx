@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./ConfirmModal.css";
-import convertAndScaleScientificNumber from "../utils/converter";
+import calculatePower from "../utils/calculatePower";
 
 const ConfirmModal = ({
   isOpen,
@@ -14,6 +14,7 @@ const ConfirmModal = ({
   fromBlockChain,
   toBlockChain,
   onConfirm,
+  multiplier,
 }) => {
   if (!isOpen) return null;
 
@@ -31,14 +32,17 @@ const ConfirmModal = ({
           <div className="detail">
             <span>To:</span>
             <span>
-              {quote?.dstQuoteTokenAmount * 0.992224} {toCoin.symbol}
+              {quote.dstQuoteTokenAmount * 0.992224 * multiplier}
+              {toCoin.symbol}
             </span>
           </div>
           <div className="detail">
             <span>Exchange Rate:</span>
             <span>
               1 {fromCoin.symbol} ={" "}
-              {(quote?.dstQuoteTokenAmount * 0.992224) / fromAmount}{" "}
+              {(quote?.dstQuoteTokenAmount * 0.992224 * multiplier) /
+                quote?.srcQuoteTokenAmount}
+              &nbsp;
               {toCoin.symbol}
             </span>
           </div>
@@ -46,10 +50,9 @@ const ConfirmModal = ({
             <span>Estimated Value:</span>
             <span>
               ${" "}
-              {convertAndScaleScientificNumber(
-                quote?.dstQuoteTokenUsdValue,
-                0.992224
-              )}
+              {quote?.dstQuoteTokenUsdValue *
+                calculatePower(quote?.dstQuoteTokenUsdValue) *
+                0.992224}
             </span>
           </div>
           <div className="detail">

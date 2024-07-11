@@ -38,9 +38,12 @@ export const SwapBridgeProvider = ({ children }) => {
       "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
   });
 
-  const [balance, setBalance] = useState(15);
+  const [balance, setBalance] = useState(2);
   const [success, setSuccess] = useState(false);
   const [quote, setQuote] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
   return (
     <SwapBridgeContext.Provider
       value={{
@@ -58,6 +61,10 @@ export const SwapBridgeProvider = ({ children }) => {
         setSuccess,
         quote,
         setQuote,
+        errorCode,
+        setErrorCode,
+        errorMsg,
+        setErrorMsg,
       }}
     >
       {children}
