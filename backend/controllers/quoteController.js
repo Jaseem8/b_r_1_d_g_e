@@ -1,31 +1,48 @@
 const axios = require("axios");
-const { fetchQuote } = require("../services/quoteService");
-const XY_API_URL = process.env.XY_API_URL;
+const { getQuote } = require("../controllers/quoteController");
 
-const getQuote = async (req, res) => {
-  try {
-    const data = req.body;
-    // console.log("quote");
-    const srcChainId = data.fromCoin.chainId;
-    const srcQuoteTokenAddress = data.fromCoin.address;
-    const srcQuoteTokenAmount = data.amount;
+jest.mock("axios"); // Mock Axios module
 
-    //
-    const dstChainId = data.toCoin.chainId;
-    const dstQuoteTokenAddress = data.toCoin.address;
-    const slippage = 1;
+describe("Quote Controller Tests", () => {
+  const mockReq = {
+    body: {
+      fromCoin: {
+        chainId: 1,
+        address: "0x1234567890abcdef",
+      },
+      toCoin: {
+        chainId: 137,
+        address: "0xa0bE1234567890abcde",
+      },
+      amount: 1000,
+    },
+  };
 
-    const url = `${XY_API_URL}/quote?srcChainId=${srcChainId}&srcQuoteTokenAddress=${srcQuoteTokenAddress}&srcQuoteTokenAmount=${srcQuoteTokenAmount}&dstChainId=${dstChainId}&dstQuoteTokenAddress=${dstQuoteTokenAddress}&slippage=${slippage}`;
-    // const url = `${XY_API_URL}/quote?srcChainId=42161&srcQuoteTokenAddress=0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8&srcQuoteTokenAmount=999000000&dstChainId=59144&dstQuoteTokenAddress=0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE&slippage=1`;
-    // console.log(url);
+  const mockRes = {
+    json: jest.fn(),
+    status: jest.fn(() => mockRes),
+  };
 
-    const response = await axios.get(url);
+  it("getQuote should return quote data", async () => {
+    const mockQuoteData = {
+      /* Mock response data */
+    };
+    axios.get.mockResolvedValue({ data: mockQuoteData });
 
-    console.log("from quoteController", response.data);
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    await getQuote(mockReq, mockRes);
 
-module.exports = { getQuote };
+    expect(mockRes.json).toHaveBeenCalledWith(mockQuoteData);
+  });
+
+  it("getQuote should handle API errors", async () => {
+    const errorMessage = "API Error";
+    axios.get.mockRejectedValue(new Error(errorMessage));
+
+    await getQuote(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(500);
+    expect(mockRes.json).toHaveBeenCalledWith({ error: errorMessage });
+  });
+
+  // Add more specific tests for different scenarios, validation, etc.
+});
